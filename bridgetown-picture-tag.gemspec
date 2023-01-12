@@ -17,13 +17,12 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 2.7.0"
 
-  spec.add_dependency "bridgetown", ">= 1.2.0.beta2", "< 2.0"
+  spec.add_dependency "bridgetown", ">= 1.2.0.beta4", "< 2.0"
 
   spec.add_dependency "ruby-vips", ">= 2.1.0"
   spec.add_dependency "image_processing", ">= 1.11.3"
 
   spec.add_development_dependency "bundler"
-  # spec.add_development_dependency "nokogiri", "~> 1.6"
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rubocop-bridgetown", "~> 0.2"
