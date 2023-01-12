@@ -1,7 +1,11 @@
 module Bridgetown
   module PictureTag
+    def self.site
+      Bridgetown.sites.first
+    end
+
     def self.config
-      Bridgetown.sites.first.config.picture_tag
+      site.config.picture_tag
     end
 
     module Utils

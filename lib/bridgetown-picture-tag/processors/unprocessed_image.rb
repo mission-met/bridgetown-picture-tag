@@ -5,13 +5,13 @@ module Bridgetown
     module Processors
       class UnprocessedImage
         def initialize(builder, to)
-          @builder, @to = builder, to
+          @builder = builder
         end
 
         def process_images
           PictureTag.config.formats.flat_map do |format|
             PictureTag.config.widths.flat_map do |width|
-              pi = ProcessedImage.new(self, @to, format, width)
+              pi = ProcessedImage.new(self, format, width)
               pi.process!
               pi
             end
