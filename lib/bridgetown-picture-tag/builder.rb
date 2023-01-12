@@ -23,9 +23,7 @@ module  Bridgetown
       private
 
       def process(path, **params)
-        path_without_forward_slash = path.delete_prefix("/")
-        full_path = Pathname.new(site.source).join(path_without_forward_slash)
-        processor = Processors::PictureProcessor.new(site, full_path)
+        processor = Processors::PictureProcessor.new(site, path)
         processor.process!(**params)
 
         PictureTagFor.new(processor).out(**params)

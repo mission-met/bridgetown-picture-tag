@@ -47,73 +47,79 @@ describe(Bridgetown::PictureTag) do
       FileUtils.rm_rf(
         source_dir("assets/images/generated")
       )
+      FileUtils.rm_rf(
+        source_dir("assets/images/downloaded")
+      )
     end
 
-    [:liquid, :erb].each do |tag_type|
-      context "#{tag_type} tag" do
-        let(:contents) { File.read(dest_dir("index-#{tag_type}.html")) }
+    [:liquid, :erb].each do |rendering_engine_type|
+      context "#{rendering_engine_type} tag" do
+        let(:contents) { File.read(dest_dir("index-#{rendering_engine_type}.html")) }
         let(:page) { Capybara::Node::Simple.new(contents) }
 
-        it "includes id" do
-          expect(page).to have_css("picture[id='fit']")
-        end
+        [:direct_path, :download_url].each do |image_type|
+          describe image_type.to_s.humanize do
+            it "includes id" do
+              expect(page).to have_css("picture[id='#{image_type}']")
+            end
 
-        it "includes class" do
-          expect(page).to have_css("picture.responsive")
-        end
+            it "includes class" do
+              expect(page).to have_css("picture[id='#{image_type}'].responsive")
+            end
 
-        it "includes alt" do
-          expect(page).to have_css("picture img[alt='Fit']")
-        end
+            it "includes alt" do
+              expect(page).to have_css("picture[id='#{image_type}'] img[alt='Awesome Alt']")
+            end
 
-        it "includes alt as title" do
-          expect(page).to have_css("picture img[title='Fit']")
-        end
+            it "includes alt as title" do
+              expect(page).to have_css("picture[id='#{image_type}'] img[title='Awesome Alt']")
+            end
 
-        it "img should be jpeg" do
-          expect(page.find("picture img[alt='Fit']")[:src]).to match(/\.jpg$/)
-        end
+            it "img should be jpeg" do
+              expect(page.find("picture[id='#{image_type}'] img[alt='Awesome Alt']")[:src]).to match(/\.jpg$/)
+            end
 
-        it "sets sources" do
-          webp = page.find("picture source[type='image/webp']")
-          expect(webp).to be_present
-          expect(src_set_sizes(webp)).to eq(Bridgetown::PictureTag.config.widths)
+            it "sets sources" do
+              webp = page.find("picture[id='#{image_type}'] source[type='image/webp']")
+              expect(webp).to be_present
+              expect(src_set_sizes(webp)).to eq(Bridgetown::PictureTag.config.widths)
 
-          jxl = page.find("picture source[type='image/jxl']")
-          expect(jxl).to be_present
-          expect(src_set_sizes(jxl)).to eq(Bridgetown::PictureTag.config.widths)
+              jxl = page.find("picture[id='#{image_type}'] source[type='image/jxl']")
+              expect(jxl).to be_present
+              expect(src_set_sizes(jxl)).to eq(Bridgetown::PictureTag.config.widths)
 
-          avif = page.find("picture source[type='image/avif']")
-          expect(avif).to be_present
-          expect(src_set_sizes(avif)).to eq(Bridgetown::PictureTag.config.widths)
+              avif = page.find("picture[id='#{image_type}'] source[type='image/avif']")
+              expect(avif).to be_present
+              expect(src_set_sizes(avif)).to eq(Bridgetown::PictureTag.config.widths)
 
-          jpeg = page.find("picture source[type='image/jpeg']")
-          expect(jpeg).to be_present
-          expect(src_set_sizes(jpeg)).to eq(Bridgetown::PictureTag.config.widths)
-        end
+              jpeg = page.find("picture[id='#{image_type}'] source[type='image/jpeg']")
+              expect(jpeg).to be_present
+              expect(src_set_sizes(jpeg)).to eq(Bridgetown::PictureTag.config.widths)
+            end
 
-        def src_set_sizes(source)
-          source[:srcset].split(/\s|,/).select { |section| section =~ /\d.w$/ }.map(&:to_i)
-        end
+            def src_set_sizes(source)
+              source[:srcset].split(/\s|,/).select { |section| section =~ /\d.w$/ }.map(&:to_i)
+            end
 
-        it "sets sources in correct order" do
-          all_source_types =
-            page
-              .all("source")
-              .map { |source| source[:type] }
+            it "sets sources in correct order" do
+              all_source_types =
+                page
+                  .all("picture[id='#{image_type}'] source")
+                  .map { |source| source[:type] }
 
-          expect(all_source_types).to eq(
-            [
-              "image/jxl",
-              "image/avif",
-              "image/webp",
-              "image/jpeg"
-            ]
-          )
+              expect(all_source_types).to eq(
+                [
+                  "image/jxl",
+                  "image/avif",
+                  "image/webp",
+                  "image/jpeg"
+                ]
+              )
+            end
+          end
         end
       end
     end
-
 
     # xcontext "transformations" do
     #   it "outputs a custom transformation" do

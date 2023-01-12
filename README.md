@@ -6,8 +6,8 @@ This
 
 1. Install
 
-2. Write this: `{% picture test.jpg %} <!-- liquid -->`
-Or this: `<%= picture test.jpg %> <!-- erb -->`
+2. Write this: `{% picture /assets/images/test.jpg %} <!-- liquid -->`
+Or this: `<%= picture "/assets/images/test.jpg" %> <!-- erb -->`
 
 3. Get this:
 
@@ -46,3 +46,23 @@ Or this: `<%= picture test.jpg %> <!-- erb -->`
 > "That's super cool, but what if I only want jxl and jpeg?"
 
 ## TODO
+
+
+> "That's neat. Got any other tricks?"
+
+Just a few...
+
+
+## Images via url
+
+Ever need to reference an external url, but don't want to download it and then transform form it? No problem. Just use use a url and it will work just fine!
+
+`<%= picture "https://www.awesomesite.com/image.jpg" %> <!-- erb -->`
+
+```yaml
+bridgetown-picture-tag:
+  generation_destination: /assets/images/downloaded # default download location
+```
+
+Plus we're smart about not double downloading or saving the file multiple times to disk.
+

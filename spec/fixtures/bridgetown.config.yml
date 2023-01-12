@@ -4,12 +4,24 @@ content_engine: resource
 
 # partial config here, also in initializers.rb
 bridgetown-picture-tag:
+  generation_destination: "assets/images/generated"
+  download_destination: "assets/images/downloaded"
+
   formats:
     - jxl
     - webp
     - avif
     - jpeg
     - original
+
+  format_order:
+    - jxl
+    - avif
+    - webp
+    - jpeg
+    - gif
+    - png
+
   widths:
     - 320
     - 640

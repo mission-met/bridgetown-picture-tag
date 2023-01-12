@@ -4,6 +4,12 @@ template_engine: erb
 permalink: "/index-erb.html"
 ---
 
-<%= picture "/assets/images/fit.jpg", alt: "Fit", class: "responsive", id: "fit" %>
+<%= picture "/assets/images/fit.jpg",
+            id: "direct_path",
+            alt: "Awesome Alt",
+            class: "responsive" %>
 
-<%# picture "https://raw.githubusercontent.com/janko/image_processing/master/test/fixtures/landscape.jpg", alt: "URL Landscape" %>
+<%= picture "https://raw.githubusercontent.com/janko/image_processing/master/test/fixtures/landscape.jpg",
+            id: "download_url",
+            alt: "Awesome Alt",
+            class: "responsive" %>

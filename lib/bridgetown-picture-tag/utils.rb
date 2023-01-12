@@ -1,11 +1,27 @@
 module Bridgetown
   module PictureTag
-    def self.site
-      Bridgetown.sites.first
+    mattr_accessor :site
+
+    def self.site_source
+      Pathname.new(
+        site.source
+      )
+    end
+
+    def self.config_generation_destination
+      site_source.join(config.generation_destination)
+    end
+
+    def self.config_download_destination
+      site_source.join(config.download_destination)
     end
 
     def self.config
       site.config.picture_tag
+    end
+
+    def self.cache
+      @cache ||= Bridgetown::Cache.new("bridgetown-picture-tag")
     end
 
     module Utils

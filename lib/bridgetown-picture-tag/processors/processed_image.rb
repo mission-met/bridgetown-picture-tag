@@ -8,17 +8,18 @@ class Bridgetown::PictureTag::Processors::ProcessedImage
   attr_reader :width, :processed
 
   def output_filename
-    Pathname.new(
-      Bridgetown::PictureTag.site.source
-    ).join(
-      Bridgetown::PictureTag.config.destination
-    ).join(
-      "#{unprocessed_image.md5}/#{unprocessed_image.file_name}-#{width}.#{ext}"
-    )
+
+    Bridgetown::PictureTag
+      .site_source
+      .join(
+        Bridgetown::PictureTag.config.generation_destination
+      ).join(
+        "#{unprocessed_image.md5}/#{unprocessed_image.file_name}-#{width}.#{desired_format}"
+      )
   end
 
   def output_src_path
-    "/" + output_filename.relative_path_from(unprocessed_image.builder.source).to_s
+    "/" + output_filename.relative_path_from(Bridgetown::PictureTag.site_source).to_s
   end
 
   def desired_format
@@ -31,14 +32,6 @@ class Bridgetown::PictureTag::Processors::ProcessedImage
     Bridgetown::PictureTag::Format.find(f)
   end
 
-  def ext
-    desired_format.desired_ext
-  end
-
-  def convert
-    desired_format.vips_format
-  end
-
   def process!
     return unless process?
 
@@ -47,13 +40,13 @@ class Bridgetown::PictureTag::Processors::ProcessedImage
     operations = {
       source: unprocessed_image.path,
       resize_to_limit: [@width, nil],
-      convert: convert
+      convert: desired_format.vips_format
     }
 
     @processed =
       ImageProcessing::Vips
-      .apply(operations.compact)
-      .call(destination: output_filename.to_s)
+        .apply(operations.compact)
+        .call(destination: output_filename.to_s)
   end
 
   private

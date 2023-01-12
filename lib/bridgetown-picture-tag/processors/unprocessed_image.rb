@@ -4,7 +4,7 @@ module Bridgetown
   module PictureTag
     module Processors
       class UnprocessedImage
-        def initialize(builder, to)
+        def initialize(builder)
           @builder = builder
         end
 
