@@ -6,7 +6,6 @@ module Bridgetown
       end
 
       def self.find(ext)
-        ext = ext.to_s
         formats.find { |format| format.matches?(ext) }
       end
 
@@ -22,12 +21,16 @@ module Bridgetown
 
       attr_reader :desired_ext
 
+      def to_s
+        desired_ext
+      end
+
       def extensions
-        @extensions || [@desired_ext]
+        Array(@extensions || [@desired_ext]).map(&:to_s)
       end
 
       def matches?(ext)
-        extensions.include?(ext)
+        extensions.include?(ext.to_s)
       end
 
       def vips_format
@@ -39,10 +42,12 @@ module Bridgetown
       end
     end
 
-    JPEGFormat = Format.new(desired_ext: "jpeg", extensions: %w[jpg jpeg jpe jif jfif jfi])
-    WEBPFormat = Format.new(desired_ext: "webp")
     AVIFFormat = Format.new(desired_ext: "avif")
+    GIFFormat = Format.new(desired_ext: "gif")
+    JPEGFormat = Format.new(desired_ext: "jpeg", extensions: %w[jpg jpeg jpe jif jfif jfi])
     JXLFormat = Format.new(desired_ext: "jxl")
+    PNGFormat = Format.new(desired_ext: "png")
+    WEBPFormat = Format.new(desired_ext: "webp")
   end
 end
 
