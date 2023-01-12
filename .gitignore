@@ -1,0 +1,15 @@
+# Ignore bundler config.
+/.bundle
+
+# Ignore Byebug command history file.
+.byebug_history
+
+# dotenv environment variables file
+.env
+
+# Mac files
+.DS_Store
+
+# Bridgetown
+.bridgetown-cache
+spec/dest

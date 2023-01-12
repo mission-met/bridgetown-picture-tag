@@ -1,0 +1,19 @@
+timezone: UTC
+
+content_engine: resource
+
+# partial config here, also in initializers.rb
+bridgetown-picture-tag:
+  formats:
+    - jxl
+    - webp
+    - avif
+    - jpeg
+    - original
+  widths:
+    - 320
+    - 640
+    - 960
+    - 1280
+    - 1920
+    - 2560
