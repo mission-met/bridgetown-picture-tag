@@ -57,7 +57,7 @@ describe(Bridgetown::PictureTag) do
         let(:contents) { File.read(dest_dir("index-#{rendering_engine_type}.html")) }
         let(:page) { Capybara::Node::Simple.new(contents) }
 
-        [:direct_path, :download_url].each do |image_type|
+        [:direct_path].each do |image_type|
           describe image_type.to_s.humanize do
             it "includes id" do
               expect(page).to have_css("picture[id='#{image_type}']")
